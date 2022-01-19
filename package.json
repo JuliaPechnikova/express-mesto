@@ -1,0 +1,32 @@
+{
+  "name": "express-mesto",
+  "version": "1.0.0",
+  "description": "Mesto",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "npx nodemon app.js",
+    "lint": "npx eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yandex-praktikum/express-mesto.git"
+  },
+  "author": "Julia Pechnikova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yandex-praktikum/express-mesto/issues"
+  },
+  "homepage": "https://github.com/yandex-praktikum/express-mesto#readme",
+  "devDependencies": {
+    "eslint": "^8.7.0",
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "express": "^4.17.2",
+    "mongoose": "^6.1.6"
+  },
+  "keywords": []
+}
