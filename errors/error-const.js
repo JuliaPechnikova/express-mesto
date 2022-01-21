@@ -2,4 +2,4 @@ const ERROR_CODE = 400;
 const NOT_FOUND = 404;
 const UNDEFINED_ERROR = 500;
 
-module.exports = {ERROR_CODE, NOT_FOUND, UNDEFINED_ERROR}
+module.exports = { ERROR_CODE, NOT_FOUND, UNDEFINED_ERROR };

@@ -5,18 +5,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 2, // минимальная длина имени — 2 символа
-    maxlength: 30 // а максимальная — 30 символов
+    maxlength: 30, // а максимальная — 30 символов
   },
   about: {
     type: String,
     required: true,
     minlength: 2, // минимальная длина имени — 2 символа
-    maxlength: 30 // а максимальная — 30 символов
+    maxlength: 30, // а максимальная — 30 символов
   },
   avatar: {
     type: String, // гендер — это строка
-    required: true
-  }
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('user', userSchema);
