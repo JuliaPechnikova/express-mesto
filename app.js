@@ -1,11 +1,11 @@
-require('dotenv').config();
 const rateLimit = require('express-rate-limit');
 const express = require('express');
 const mongoose = require('mongoose');
-const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const { errors } = require('celebrate');
 const errorProcess = require('./middlewares/error-process');
+const { loginValidation, createUserValidation } = require('./middlewares/userValidation');
 
 const { PORT = 3002 } = process.env;
 const app = express();
@@ -26,26 +26,26 @@ const {
   login,
   createUser,
 } = require('./controllers/users');
+const NotFoundError = require('./errors/not-found');
+const auth = require('./middlewares/auth');
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-app.post('/signin', login);
-app.post('/signup', createUser);
+app.post('/signin', loginValidation, login);
+app.post('/signup', createUserValidation, createUser);
 
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(errorProcess);
-
-app.use((req, res, next) => {
-  res.status(404).send({ message: 'Запрос не найден' });
-  next();
+app.use(auth, (req, res, next) => {
+  next(new NotFoundError('Запрос не найден'));
 });
+
+app.use(errors());
+app.use(errorProcess);
 
 app.listen(PORT, () => {
 });
