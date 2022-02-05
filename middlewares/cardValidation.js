@@ -3,7 +3,7 @@ const { celebrate, Joi } = require('celebrate');
 module.exports.createCardValidation = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(true),
-    link: Joi.string().pattern('(\b(https(?)://)?[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]').required(true),
+    link: Joi.string().pattern(/^(https?:\/\/)(www.)?[a-zA-Z0-9\-.]+\.[a-zA-Z]{2,}(\/\S*)?$/).required(true),
   }),
 });
 
