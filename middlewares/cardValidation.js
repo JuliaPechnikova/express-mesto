@@ -8,7 +8,7 @@ module.exports.createCardValidation = celebrate({
 });
 
 module.exports.cardIdValidation = celebrate({
-  body: Joi.object().keys({
+  params: Joi.object().keys({
     cardId: Joi.string().length(24).hex(),
   }),
 });
