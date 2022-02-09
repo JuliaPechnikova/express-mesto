@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const errorProcess = require('./middlewares/error-process');
 const { loginValidation, createUserValidation } = require('./middlewares/userValidation');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3002 } = process.env;
 const app = express();
@@ -34,11 +35,15 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useUnifiedTopology: true,
 });
 
+app.use(requestLogger);
+
 app.post('/signin', loginValidation, login);
 app.post('/signup', createUserValidation, createUser);
 
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
+
+app.use(errorLogger); // подключаем логгер ошибок
 
 app.use(auth, (req, res, next) => {
   next(new NotFoundError('Запрос не найден'));

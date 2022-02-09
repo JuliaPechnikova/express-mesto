@@ -4,15 +4,22 @@ const UnathorizedError = require('../errors/unathorized');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports = (req, res, next) => {
-  let payload;
-  try {
-    // попытаемся верифицировать токен
-    payload = jwt.verify(req.cookies.jwt, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
-  } catch (err) {
-    // отправим ошибку, если не получилось
-    next(new UnathorizedError('Вы не авторизованы'));
+  const { authorization } = req.headers;
+  console.log(req.headers);
+
+  if (!authorization || !authorization.startsWith('Bearer ')) {
+    return next(new UnathorizedError('Вы не авторизованы'));
   }
 
-  req.user = payload;
-  next();
+  const token = authorization.replace('Bearer ', '');
+  let payload;
+  try {
+    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
+  } catch (err) {
+    return next(new UnathorizedError('Вы не авторизованы'));
+  }
+
+  req.user = payload; // записываем пейлоуд в объект запроса
+
+  return next(); // пропускаем запрос дальше
 };
