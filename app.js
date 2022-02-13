@@ -7,6 +7,7 @@ const { errors } = require('celebrate');
 const errorProcess = require('./middlewares/error-process');
 const { loginValidation, createUserValidation } = require('./middlewares/userValidation');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const cors = require('./middlewares/CORS');
 
 const { PORT = 3002 } = process.env;
 const app = express();
@@ -36,6 +37,13 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
 
 app.use(requestLogger);
+app.use(cors);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signin', loginValidation, login);
 app.post('/signup', createUserValidation, createUser);
